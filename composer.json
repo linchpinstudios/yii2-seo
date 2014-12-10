@@ -1,0 +1,21 @@
+{
+    "name": "linchpinstudios/yii2-seo",
+    "description": "A full SEO manament system for Yii2.",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","seo","search","engine","optimization"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Josh Hagel",
+            "email": "joshhagel@linchpinstudios.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "linchpinstudios\\seo\\": ""
+        }
+    }
+}

@@ -10,43 +10,36 @@ use linchpinstudios\seo\models\SeoPages;
 class Seo extends Model
 {
     
-    public $ignoreParams = false;
-    
     public $trackViews = true;
     
     public $metaTags = [];
     
-    public $queryParams = [];
+    public $actionParams = [];
     
     public $route = '';
     
-    public $view;
-    
     public function run()
     {
-        
-        $this->setView( Yii::$app->getView() );
         $this->setRoute( Yii::$app->controller->route );
-        $this->setQueryParams( Yii::$app->request->queryParams );
+        $this->setActionParams( Yii::$app->request->queryParams );
         $this->generatePageData();
         $this->processMetaTags();
         
-        
     }
     
     
-    public function setView( $view )
+    public function setActionParams( $params = [] )
     {
+        $array = $params;
+        foreach($array as $key=>$value)
+        {
+            if(is_null($value) || $value == '')
+                unset($array[$key]);
+        }
         
-        $this->view = $view;
-        
-    }
-    
-    
-    public function setQueryParams( $params )
-    {
-        
-        $this->queryParams = $params;
+        if(is_array($array)) {
+            $this->actionParams = $array;
+        }
         
     }
     
@@ -67,8 +60,18 @@ class Seo extends Model
     }
     
     
-    public function setMetaTag( $metaTags, $merge = true )
+    public function setMetaTags( $meta, $merge = true )
     {
+        
+        foreach($meta as $v) {
+            $metaTags[] = [
+                'name' => $v->name,
+                'content'   => $v->content,
+            ];
+        }
+        if(empty($metaTags)){
+            return true;
+        }
         
         if( $merge ) {
             $this->metaTags = ArrayHelper::merge( $this->metaTags, $metaTags );
@@ -86,23 +89,20 @@ class Seo extends Model
             'view' => $this->route
         ];
         
-        if( !$this->ignoreParams ) {
-            $where['query_params'] = json_encode($this->queryParams);
-        }
+        $where['action_params'] = json_encode($this->actionParams);
+        
         
         $page = SeoPages::find()->where($where)->with('meta')->one();
         
-        if( $this->trackViews && !$page  ) {
+        if( $this->trackViews && $page == null ) {
             $page               = new SeoPages();
             $page->view         = $this->route;
-            $page->query_params = $this->queryParams;
+            $page->action_params = $this->actionParams;
             $page->save();
-            
-            error_log( print_r($page,true) );
             
         } else {
             
-            $this->setMetaTag( $page->meta );
+            $this->setMetaTags( $page->meta );
             
         }
         
@@ -115,7 +115,7 @@ class Seo extends Model
         
         foreach( $this->metaTags as $tag ) {
             
-            $this->registerMetaTag( $tag->name, $tag->content);
+            $this->registerMetaTag( $tag['name'], $tag['content']);
             
         }
         
@@ -125,7 +125,7 @@ class Seo extends Model
     public function registerMetaTag( $name, $content )
     {
         
-        $this->view->registerMetaTag(['name' => $name, 'content' => $content]);
+        Yii::$app->view->registerMetaTag(['name' => $name, 'content' => $content]);
         
     }
     

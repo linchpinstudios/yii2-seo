@@ -10,7 +10,7 @@ use linchpinstudios\seo\models\SeoMeta;
  *
  * @property integer $id
  * @property string $view
- * @property string $query_params
+ * @property string $action_params
  */
 class SeoPages extends \yii\db\ActiveRecord
 {
@@ -18,7 +18,7 @@ class SeoPages extends \yii\db\ActiveRecord
     public function beforeValidate()
     {
         if (parent::beforeValidate()) {
-            $this->query_params = json_encode($this->query_params);
+            $this->action_params = json_encode($this->action_params);
             return true;
         } else {
             return false;
@@ -29,7 +29,7 @@ class SeoPages extends \yii\db\ActiveRecord
     public function afterFind( )
     {
         
-        $this->query_params = json_decode($this->query_params);
+        $this->action_params = json_decode($this->action_params);
         
         return true;
         
@@ -63,7 +63,7 @@ class SeoPages extends \yii\db\ActiveRecord
     {
         return [
             [['view'], 'string', 'max' => 255],
-            [['query_params'], 'string', 'max' => 555]
+            [['action_params'], 'string', 'max' => 555]
         ];
     }
 
@@ -75,7 +75,7 @@ class SeoPages extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'view' => Yii::t('app', 'View'),
-            'query_params' => Yii::t('app', 'Query Params'),
+            'action_params' => Yii::t('app', 'Query Params'),
         ];
     }
     

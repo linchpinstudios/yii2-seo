@@ -19,7 +19,7 @@ class SeoPagesSearch extends SeoPages
     {
         return [
             [['id'], 'integer'],
-            [['view', 'query_params'], 'safe'],
+            [['view', 'action_params'], 'safe'],
         ];
     }
 
@@ -56,7 +56,7 @@ class SeoPagesSearch extends SeoPages
         ]);
 
         $query->andFilterWhere(['like', 'view', $this->view])
-            ->andFilterWhere(['like', 'query_params', $this->query_params]);
+            ->andFilterWhere(['like', 'action_params', $this->action_params]);
 
         return $dataProvider;
     }

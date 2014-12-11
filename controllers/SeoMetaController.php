@@ -11,7 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use yii\web\UrlManager;
+use yii\helpers\Url;
 
 /**
  * SeoMetaController implements the CRUD actions for SeoMeta model.
@@ -148,7 +148,9 @@ class SeoMetaController extends Controller
     
     protected function findPagesArray()
     {
-        $pagesModel = SeoPages::find()->orderBy('view','query_params')->asArray()->all();
+        $urlManager = $this->module->urlManager;
+        
+        $pagesModel = SeoPages::find()->all();
         
         $pageArray = [];
         
@@ -156,10 +158,10 @@ class SeoMetaController extends Controller
             $params = [
                 $value->view,
             ];
-            $params = ArrayHelper::merge($params, $value->query_params);
-            $pageArray[$value->id] = UrlManager::createUrl($params);
+            $params = ArrayHelper::merge($params, $value->action_params);
+            $pageArray[$value->id] = Yii::$app->$urlManager->createUrl($params);
         }
         
-        return ArrayHelper::map($pagesModel, 'id', 'view');
+        return $pageArray;
     }
 }

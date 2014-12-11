@@ -10,6 +10,7 @@ class Module extends \yii\base\Module
     
     public $trackViews = true;
     
+    public $urlManager = 'urlManager';
 
     public function init()
     {

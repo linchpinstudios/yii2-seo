@@ -16,7 +16,7 @@ class m141210_005652_init extends Migration
         $this->createTable('{{%seo_pages}}',[
             'id'            => Schema::TYPE_PK,
             'view'          => Schema::TYPE_STRING . '(255)',
-            'query_params'  => Schema::TYPE_STRING . '(555)',
+            'action_params'  => Schema::TYPE_STRING . '(555)',
         ],$tableOptions);
     
         $this->createTable('{{%seo_meta}}',[

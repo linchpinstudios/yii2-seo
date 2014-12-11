@@ -9,5 +9,5 @@ use yii\helpers\Html;
     <p>
         This will be the location of SEO audit.
     </p>
-    <?= Html::a('Meta Tags', ['/'.$moduleId.'/seometa/index']) ?>
+    <?= Html::a('Meta Tags', ['/'.$moduleId.'/seo-meta/index']) ?>
 </div>

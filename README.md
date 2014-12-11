@@ -31,7 +31,18 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Setup beforeview
+Setup beforeAction in controllers you want to use SEO
+
+```public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            $seoMetaTags = New \linchpinstudios\seo\models\Seo;
+            $seoMetaTags->run();
+            return true;  // or false if needed
+        } else {
+            return false;
+        }
+    }```
 
 To access the module, you need to add this to your application configuration:
 
